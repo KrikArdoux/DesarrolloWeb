@@ -1,5 +1,7 @@
 package com.example.Productos.controller;
 
+import com.example.Productos.dto.ProductRequest;
+import com.example.Productos.dto.ProductResponse;
 import com.example.Productos.model.Products;
 import com.example.Productos.service.ProductService;
 import org.springframework.http.HttpStatus;
@@ -44,11 +46,23 @@ public class ProductsController {
         return ResponseEntity.notFound().build();
     }
     @PutMapping("/{id}")
-    public ResponseEntity<Products> update(@PathVariable Long id,@RequestBody Products product){
-        Optional<Products> optional = service.update(id,product);
-        if(optional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(optional.get());
+    public ResponseEntity<ProductResponse> update(@PathVariable Long id, @RequestBody ProductRequest product){
+        Optional<Products> optional = service.update(id,toEntity(product));
+        if(optional.isPresent()){
+            return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(optional.get()));
         }
         return ResponseEntity.notFound().build();
+    }
+    private ProductResponse toResponse (Products product){
+        return new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getStock());
+    }
+
+    private Products toEntity(ProductRequest request){
+        Products product = new Products();
+        product.setName(request.name());
+        product.setPrice(request.price());
+        product.setStock(request.stock());
+
+        return product;
     }
 }
