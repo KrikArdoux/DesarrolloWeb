@@ -4,6 +4,7 @@ import com.example.Productos.dto.ProductRequest;
 import com.example.Productos.dto.ProductResponse;
 import com.example.Productos.model.Products;
 import com.example.Productos.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,9 +34,9 @@ public class ProductsController {
         }
     }
     @PostMapping()
-    public ResponseEntity<Products> postMethodName(@RequestBody Products product){
-        Products savedProduct = service.save(product);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
+    public ResponseEntity<Products> postMethodName(@Valid @RequestBody ProductRequest product){
+        Products newProduct = service.save(toEntity(product), product.categoryId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Products> delete(@PathVariable Long id){
@@ -54,7 +55,7 @@ public class ProductsController {
         return ResponseEntity.notFound().build();
     }
     private ProductResponse toResponse (Products product){
-        return new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getStock());
+        return new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getStock(),0L,"");
     }
 
     private Products toEntity(ProductRequest request){
