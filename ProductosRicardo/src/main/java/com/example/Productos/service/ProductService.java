@@ -1,5 +1,9 @@
 package com.example.Productos.service;
 
+<<<<<<< HEAD
+=======
+import com.example.Productos.exception.ResourceNotFoundException;
+>>>>>>> 034c3ba29dd96d652c953b386560803721752abc
 import com.example.Productos.model.Category;
 import com.example.Productos.model.Products;
 import com.example.Productos.repository.CategoryRepository;
@@ -21,19 +25,33 @@ public class ProductService {
     public List<Products> getAll(){
         return repo.findAll();
     }
+
     public Optional<Products> findById(Long id){
         return repo.findById(id);
     }
+<<<<<<< HEAD
     public Products save(Products products,Long categoryId){
         Category category =repoCategory.findById(categoryId).orElseThrow();
+=======
+
+    public Products save(Products products, Long categoryId){
+        Category category = repoCategory.findById(categoryId).orElseThrow(
+                ()-> new ResourceNotFoundException("Category Not Found with ID: " + categoryId)
+        );
+        products.setCategory(category);
+>>>>>>> 034c3ba29dd96d652c953b386560803721752abc
         return repo.save(products);
     }
-    public Optional<Products> update(Long id, Products products){
-        Optional<Products> optional = repo.findById(id);
-        if(optional.isEmpty()){
-            return optional.empty();
-        }
-        Products productDb = optional.get();
+    public Optional<Products> update(Long id, Products products, Long categoryId){Products productDb= repo.findById(id).orElseThrow(
+                ()->
+                        new ResourceNotFoundException("Product Not Found with ID: " + id)
+        );
+        Category category = repoCategory.findById(categoryId).orElseThrow(
+                ()->
+                        new ResourceNotFoundException("Category Not Found with ID: " + categoryId)
+        );
+        //Products productDb = optional.get();
+        productDb.setCategory(category);
         productDb.setName(products.getName());
         productDb.setPrice(products.getPrice());
         productDb.setStock(products.getStock());
