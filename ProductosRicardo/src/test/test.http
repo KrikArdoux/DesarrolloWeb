@@ -1,9 +1,59 @@
+GET http://localhost:8080/products
+Accept: application/json
+
+###
 POST http://localhost:8080/products
 Content-Type: application/json
 
 {
-  "name": "peluche",
-  "price": 150.00,
-  "stock": 30,
-  "categoryId": 1
+"name": "Cheetos",
+"stock": 129,
+"price": 21,
+"categoryId":50
 }
+
+###
+###
+GET http://localhost:8080/categories
+Accept: application/json
+
+###
+
+### Actualizar un producto existente
+PUT http://localhost:8080/products/4
+Content-Type: application/json
+
+{
+  "name": "Peluche",
+  "price": 30.00,
+  "stock": 100,
+  "categoryId": 45
+}
+
+### Crear una nueva categoría
+POST http://localhost:8080/categories
+Content-Type: application/json
+
+{
+  "name": "Bebidas"
+}
+
+### 
+GET http://localhost:8080/categories
+
+###
+GET http://localhost:8080/categories/1
+
+###
+PUT http://localhost:8080/categories/4
+Content-Type: application/json
+
+{
+  "name": "PruebaTarea"
+}
+
+###
+DELETE http://localhost:8080/categories/3
+
+###
+GET http://localhost:8080/categories/999
