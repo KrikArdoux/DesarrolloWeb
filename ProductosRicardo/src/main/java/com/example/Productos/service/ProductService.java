@@ -1,6 +1,8 @@
 package com.example.Productos.service;
 
+import com.example.Productos.model.Category;
 import com.example.Productos.model.Products;
+import com.example.Productos.repository.CategoryRepository;
 import com.example.Productos.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -9,9 +11,12 @@ import java.util.Optional;
 
 @Service
 public class ProductService {
-    private ProductRepository repo;
-    public ProductService(ProductRepository repo){
+    private final ProductRepository repo;
+    private final CategoryRepository repoCategory;
+
+    public ProductService(ProductRepository repo,CategoryRepository repoCategory){
         this.repo = repo;
+        this.repoCategory = repoCategory;
     }
     public List<Products> getAll(){
         return repo.findAll();
@@ -19,7 +24,8 @@ public class ProductService {
     public Optional<Products> findById(Long id){
         return repo.findById(id);
     }
-    public Products save(Products products){
+    public Products save(Products products,Long categoryId){
+        Category category =repoCategory.findById(categoryId).orElseThrow();
         return repo.save(products);
     }
     public Optional<Products> update(Long id, Products products){

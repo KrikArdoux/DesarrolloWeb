@@ -1,9 +1,6 @@
 package com.example.Productos.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Products {
@@ -13,6 +10,9 @@ public class Products {
     private String name;
     private int stock;
     private double price;
+    @ManyToOne
+    @JoinColumn(name ="category_id")
+    private Category category;
 
     public Products(){
 
@@ -54,5 +54,13 @@ public class Products {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
